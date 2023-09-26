@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/utils/context_extenssion.dart';
+import 'package:quiz_app/widgets/custom_elevated_buttom.dart';
 import 'package:quiz_app/widgets/custom_text.dart';
 import 'package:quiz_app/widgets/custom_text_field.dart';
 
@@ -37,9 +38,19 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Center(child:  CustomText(text: 'Quizard',fontSize: 30,fontWeight: FontWeight.bold)),
+                const Center(
+                    child: CustomText(
+                        text: 'Quizard',
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 20.h),
-                const CustomText(text: 'quizzer to challenge you and your frinds on all topics',fontSize: 16 ,fontWeight: FontWeight.w400,colorText: Colors.black45,),
+                const CustomText(
+                  text:
+                      'quizzer to challenge you and your frinds on all topics',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  colorText: Colors.black45,
+                ),
                 SizedBox(height: 20.h),
                 CustomTextField(
                   hint: 'Name',
@@ -47,15 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _nameTextController,
                 ),
                 SizedBox(height: 10.h),
-                ElevatedButton(
-                  onPressed: () => _performLogin(),
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50.h),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.r))),
-                  child: Text(
-                    'Start playing',
-                    style: GoogleFonts.poppins(),
+                Center(
+                  child: CustomElevatedButton(
+                    textButton: 'Start playing',
+                    onPressed: () => _performLogin(),
                   ),
                 ),
                 Row(
@@ -95,8 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() async {
     Navigator.pushReplacementNamed(context, '/questions_screen');
-
-
   }
 
   void clearEditText() {
