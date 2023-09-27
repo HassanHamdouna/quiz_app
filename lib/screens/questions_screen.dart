@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/widgets/custom_elevated_buttom.dart';
 import 'package:quiz_app/widgets/custom_option_card.dart';
 import 'package:quiz_app/widgets/custom_text.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key});
+   const QuestionsScreen({super.key, this.studentName});
+  final String? studentName ;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
