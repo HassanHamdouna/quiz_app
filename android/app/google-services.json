@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "286852357856",
+    "project_id": "quizapp-8950f",
+    "storage_bucket": "quizapp-8950f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286852357856:android:b574b4deddc61109113a85",
+        "android_client_info": {
+          "package_name": "com.hhhquiz.quiz_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj4wH0kG4ZZfULrBLgidz9n4l0z-rx5NI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

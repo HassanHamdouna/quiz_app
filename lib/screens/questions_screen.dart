@@ -54,7 +54,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     colorOption: isClicked ? Colors.green : Colors.white10),
                 SizedBox(height: 20.h),
                 CustomElevatedButton(
-                  textButton: 'Next',
+                  textButton: 'Next Questions',
                   onPressed: () {},
                 ),
                 SizedBox(
