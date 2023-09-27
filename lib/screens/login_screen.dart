@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/firebase/fb_auth_controller.dart';
+import 'package:quiz_app/models/fb_response.dart';
 import 'package:quiz_app/utils/context_extenssion.dart';
 import 'package:quiz_app/widgets/custom_elevated_buttom.dart';
 import 'package:quiz_app/widgets/custom_text.dart';
@@ -100,7 +102,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() async {
-    Navigator.pushReplacementNamed(context, '/questions_screen');
+    FbResponse response = await FbAuthController().createUser(_nameTextController.text);
+    if (response.success) {
+      Navigator.pushReplacementNamed(context, '/questions_screen');
+      clearEditText();
+    }else{
+      context.showSnackBar(message: response.message, error: !response.success);
+    }
   }
 
   void clearEditText() {
