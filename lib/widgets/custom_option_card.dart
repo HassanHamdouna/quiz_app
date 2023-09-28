@@ -6,13 +6,15 @@ class CustomOptionCard extends StatelessWidget {
     super.key,
     required this.textOption,
     required this.colorOption,
+    required this.onPressed,
   });
   final String textOption;
   final Color colorOption;
+  final Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){},
+      onTap: onPressed,
       child:  Card(
         color: colorOption,
         elevation: 1,

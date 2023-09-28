@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ScoreScreen extends StatelessWidget {
-  const ScoreScreen({super.key});
-
+  const ScoreScreen({super.key,this.userScore});
+  final int? userScore;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    print('userScore :: ${userScore}');
+    return const Scaffold(
+    );
   }
 }
