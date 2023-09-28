@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
     this.focusedBorderColor = Colors.grey,
     this.obscureText = false,
     this.suffixIcon,
+    this.onChanged,
   }) : super(key: key);
 
   final String hint;
@@ -21,10 +22,12 @@ class CustomTextField extends StatelessWidget {
   final Color focusedBorderColor;
   final Widget? suffixIcon;
   final bool obscureText;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      onChanged: onChanged,
       controller: controller,
       keyboardType: keyboardType,
       style: GoogleFonts.cairo(fontSize: 13.sp),

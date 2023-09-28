@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/firebase/fb_auth_controller.dart';
 import 'package:quiz_app/models/fb_response.dart';
 import 'package:quiz_app/screens/questions_screen.dart';
@@ -18,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _nameTextController;
+  String name = '';
 
   @override
   void initState() {
@@ -56,6 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 20.h),
                 CustomTextField(
+                  onChanged: (p0) {
+                    setState(() {
+                      name = p0;
+                    });
+                  },
                   hint: 'Name',
                   keyboardType: TextInputType.name,
                   controller: _nameTextController,
@@ -103,16 +108,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() async {
-    FbResponse response = await FbAuthController().createUser(_nameTextController.text);
+    FbResponse response =
+        await FbAuthController().createUser(_nameTextController.text);
     if (response.success) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => QuestionsScreen(studentName: _nameTextController.text),
+          builder: (context) => QuestionsScreen(userName: name),
         ),
       );
       clearEditText();
-    }else{
+    } else {
       context.showSnackBar(message: response.message, error: !response.success);
     }
   }

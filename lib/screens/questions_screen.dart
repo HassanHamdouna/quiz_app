@@ -7,9 +7,9 @@ import 'package:quiz_app/widgets/custom_option_card.dart';
 import 'package:quiz_app/widgets/custom_text.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key, this.studentName});
+  const QuestionsScreen({super.key, this.userName});
 
-  final String? studentName;
+  final String? userName;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
@@ -18,7 +18,7 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   late PageController _pageController;
   int _currentPage = 0;
-  int userScore = 0; // Initialize userScore to keep track of the score
+  int userScore = 0;
   List<Question> quizQuestions = [];
   Set<int> askedQuestionIndices = {};
 
@@ -28,8 +28,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     _pageController = PageController();
     fetchAndShuffleQuestions();
   }
-
-
 
   @override
   void dispose() {
@@ -62,7 +60,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                text: 'Question ${index + 1} out of ${quizQuestions.length}',
+                                text:
+                                    'Question ${index + 1} out of ${quizQuestions.length}',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 colorText: Colors.black45,
@@ -85,28 +84,28 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                 children: [
                                   CustomOptionCard(
                                     textOption: 'verb',
-                                    colorOption:  Colors.white10,
+                                    colorOption: Colors.white10,
                                     onPressed: () {
                                       handleAnswerSelection(0);
                                     },
                                   ),
                                   CustomOptionCard(
                                     textOption: 'noun',
-                                    colorOption:  Colors.white10,
+                                    colorOption: Colors.white10,
                                     onPressed: () {
                                       handleAnswerSelection(1);
                                     },
                                   ),
                                   CustomOptionCard(
                                     textOption: 'adjective',
-                                    colorOption:  Colors.white10,
+                                    colorOption: Colors.white10,
                                     onPressed: () {
                                       handleAnswerSelection(2);
                                     },
                                   ),
                                   CustomOptionCard(
                                     textOption: 'adverb',
-                                    colorOption:  Colors.white10,
+                                    colorOption: Colors.white10,
                                     onPressed: () {
                                       handleAnswerSelection(3);
                                     },
@@ -125,8 +124,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ScoreScreen(userScore: userScore),
+                                builder: (context) => ScoreScreen(
+                                    userScore: userScore,
+                                    userName: widget.userName!),
                               ));
                         }
                         _pageController.nextPage(
@@ -147,8 +147,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   ],
                 )
               : const Center(
-                  child:
-                      CircularProgressIndicator(),
+                  child: CircularProgressIndicator(),
                 ),
         ),
       ),
@@ -179,7 +178,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       }
     } catch (e) {
       // Handle any errors that occur during data retrieval.
-      print('Error fetching questions: $e');
     }
   }
 
@@ -187,7 +185,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     final currentQuestion = quizQuestions[_currentPage];
     final selectedPartOfSpeech = _getSelectedPartOfSpeech(selectedOptionIndex);
     final actualPartOfSpeech = currentQuestion.pos;
-     final bool isCorrectAnswer = selectedPartOfSpeech == actualPartOfSpeech;
+    final bool isCorrectAnswer = selectedPartOfSpeech == actualPartOfSpeech;
     if (isCorrectAnswer) {
       // Award 10 points for a correct answer
       setState(() {
@@ -203,7 +201,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                ScoreScreen(userScore: userScore),
+                ScoreScreen(userScore: userScore, userName: widget.userName!),
           ));
     } else {
       // Move to the next question
