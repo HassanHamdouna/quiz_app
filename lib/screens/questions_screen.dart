@@ -5,7 +5,7 @@ import 'package:quiz_app/models/question.dart';
 import 'package:quiz_app/models/quiz_result.dart';
 import 'package:quiz_app/screens/score_screen.dart';
 import 'package:quiz_app/utils/context_extenssion.dart';
-import 'package:quiz_app/widgets/custom_option_card.dart';
+import 'package:quiz_app/widgets/custom_elevated_buttom.dart';
 import 'package:quiz_app/widgets/custom_text.dart';
 
 class QuestionsScreen extends StatefulWidget {
@@ -21,6 +21,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   late PageController _pageController;
   int _currentPage = 0;
   int userScore = 0;
+  List<int?> selectedAnswers =
+      List.filled(5, null); // List to store selected answers
+
   List<Question> quizQuestions = [];
   Set<int> askedQuestionIndices = {};
 
@@ -42,7 +45,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
           child: quizQuestions.isNotEmpty
               ? Column(
                   children: [
@@ -61,12 +64,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomText(
-                                text:
-                                    'Question ${index + 1} out of ${quizQuestions.length}',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                colorText: Colors.black45,
+                              Center(
+                                child: CustomText(
+                                  text:
+                                      'Question ${index + 1} out of ${quizQuestions.length}',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  colorText: Colors.black45,
+                                ),
                               ),
                               SizedBox(height: 20.h),
                               const CustomText(
@@ -75,41 +80,70 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
-                              CustomText(
-                                text: currentQuestion.word,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                colorText: Colors.black45,
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.lightBlueAccent,
+                                  ),
+                                  width: 200.w,
+                                  height: 40,
+                                  child: Center(
+                                    child: CustomText(
+                                      text: currentQuestion.word,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      colorText: Colors.black,
+                                    ),
+                                  ),
+                                ),
                               ),
                               SizedBox(height: 20.h),
                               Column(
                                 children: [
-                                  CustomOptionCard(
-                                    textOption: 'verb',
-                                    colorOption: Colors.white10,
-                                    onPressed: () {
-                                      handleAnswerSelection(0);
+                                  // Use Radio buttons to select answers
+                                  // Store the selected answer in selectedAnswers list
+                                  RadioListTile<int?>(
+                                    title: const CustomText(text: 'verb'),
+                                    value: 0,
+                                    groupValue: selectedAnswers[index],
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedAnswers[index] = value;
+                                      });
                                     },
                                   ),
-                                  CustomOptionCard(
-                                    textOption: 'noun',
-                                    colorOption: Colors.white10,
-                                    onPressed: () {
-                                      handleAnswerSelection(1);
+                                  RadioListTile<int?>(
+                                    title: const CustomText(text: 'noun'),
+                                    value: 1,
+                                    groupValue: selectedAnswers[index],
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedAnswers[index] = value;
+                                      });
                                     },
                                   ),
-                                  CustomOptionCard(
-                                    textOption: 'adjective',
-                                    colorOption: Colors.white10,
-                                    onPressed: () {
-                                      handleAnswerSelection(2);
+                                  RadioListTile<int?>(
+                                    title: const CustomText(text: 'adjective'),
+                                    value: 2,
+                                    groupValue: selectedAnswers[index],
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedAnswers[index] = value;
+                                      });
                                     },
                                   ),
-                                  CustomOptionCard(
-                                    textOption: 'adverb',
-                                    colorOption: Colors.white10,
-                                    onPressed: () {
-                                      handleAnswerSelection(3);
+                                  RadioListTile<int?>(
+                                    title: const CustomText(text: 'adverb'),
+                                    value: 3,
+                                    groupValue: selectedAnswers[index],
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        selectedAnswers[index] = value;
+                                      });
                                     },
                                   ),
                                 ],
@@ -120,26 +154,20 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                         },
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_currentPage == quizQuestions.length - 1) {
-                          _pref();
-                        }
-                        _pageController.nextPage(
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.easeInOut,
-                        );
-                        setState(() {
-                          userScore;
-                        });
-                      },
-                      child: Text(_currentPage == quizQuestions.length - 1
-                          ? 'Finish Quiz'
-                          : 'Next Question'),
-                    ),
-                    SizedBox(height: 20.h),
-                    Text('Score: $userScore',
-                        style: const TextStyle(fontSize: 20)),
+                    CustomElevatedButton(
+                        onPressed: () {
+                          if (_currentPage == quizQuestions.length - 1) {
+                            _pref();
+                          } else {
+                            _pageController.nextPage(
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                        textButton: _currentPage == quizQuestions.length - 1
+                            ? 'Finish Quiz'
+                            : 'Next Question'),
                   ],
                 )
               : const Center(
@@ -177,34 +205,33 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     }
   }
 
-  void handleAnswerSelection(int selectedOptionIndex) {
-    final currentQuestion = quizQuestions[_currentPage];
-    final selectedPartOfSpeech = _getSelectedPartOfSpeech(selectedOptionIndex);
-    final actualPartOfSpeech = currentQuestion.pos;
-    final bool isCorrectAnswer = selectedPartOfSpeech == actualPartOfSpeech;
-    if (isCorrectAnswer) {
-      // Award 10 points for a correct answer
-      setState(() {
-        userScore += 10;
-      });
-    }
-
-    askedQuestionIndices.add(_currentPage);
-
-    if (askedQuestionIndices.length == 5) {
-      // End of quiz, you can navigate to the results screen or perform any other actions.
-      _pref();
-    } else {
-      // Move to the next question
-      _pageController.nextPage(
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      );
+  void _pref() {
+    if (_checkData()) {
+      _calculateScore();
+      _save();
     }
   }
 
-  String _getSelectedPartOfSpeech(int selectedOptionIndex) {
-    switch (selectedOptionIndex) {
+  void _calculateScore() {
+    for (int i = 0; i < quizQuestions.length; i++) {
+      final currentQuestion = quizQuestions[i];
+      final selectedAnswer = selectedAnswers[i];
+      if (selectedAnswer != null) {
+        final selectedPartOfSpeech = _getSelectedPartOfSpeech(selectedAnswer);
+        final actualPartOfSpeech = currentQuestion.pos;
+        final bool isCorrectAnswer = selectedPartOfSpeech == actualPartOfSpeech;
+        if (isCorrectAnswer) {
+          // Award 10 points for a correct answer
+          setState(() {
+            userScore += 10;
+          });
+        }
+      }
+    }
+  }
+
+  String _getSelectedPartOfSpeech(int selectedAnswer) {
+    switch (selectedAnswer) {
       case 0:
         return 'verb';
       case 1:
@@ -218,12 +245,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     }
   }
 
-  void _pref() {
-    if (_checkData()) {
-      _save();
-    }
-  }
-
   bool _checkData() {
     if (widget.userName!.isNotEmpty) {
       return true;
@@ -233,21 +254,19 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   }
 
   void _save() async {
-      FbStoreController().createQuizResult(result);
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ScoreScreen(
-                userScore: userScore,
-                userName: widget.userName!),
-          ));
-
+    await FbStoreController().createQuizResult(result);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ScoreScreen(userScore: userScore, userName: widget.userName!),
+        ));
   }
 
   QuizResult get result {
     QuizResult quizResult = QuizResult();
     quizResult.name = widget.userName!;
-    quizResult.score =  userScore;
+    quizResult.score = userScore;
     return quizResult;
   }
 }
