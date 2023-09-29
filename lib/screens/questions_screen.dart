@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quiz_app/firebase/fb_store_controller.dart';
 import 'package:quiz_app/models/question.dart';
+import 'package:quiz_app/models/quiz_result.dart';
 import 'package:quiz_app/screens/score_screen.dart';
+import 'package:quiz_app/utils/context_extenssion.dart';
 import 'package:quiz_app/widgets/custom_option_card.dart';
 import 'package:quiz_app/widgets/custom_text.dart';
 
@@ -121,13 +123,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_currentPage == quizQuestions.length - 1) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ScoreScreen(
-                                    userScore: userScore,
-                                    userName: widget.userName!),
-                              ));
+                          _pref();
                         }
                         _pageController.nextPage(
                           duration: const Duration(seconds: 1),
@@ -197,12 +193,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
     if (askedQuestionIndices.length == 5) {
       // End of quiz, you can navigate to the results screen or perform any other actions.
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                ScoreScreen(userScore: userScore, userName: widget.userName!),
-          ));
+      _pref();
     } else {
       // Move to the next question
       _pageController.nextPage(
@@ -225,5 +216,38 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       default:
         return '';
     }
+  }
+
+  void _pref() {
+    if (_checkData()) {
+      _save();
+    }
+  }
+
+  bool _checkData() {
+    if (widget.userName!.isNotEmpty) {
+      return true;
+    }
+    context.showSnackBar(message: 'Input is empty!', error: false);
+    return false;
+  }
+
+  void _save() async {
+      FbStoreController().createQuizResult(result);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScoreScreen(
+                userScore: userScore,
+                userName: widget.userName!),
+          ));
+
+  }
+
+  QuizResult get result {
+    QuizResult quizResult = QuizResult();
+    quizResult.name = widget.userName!;
+    quizResult.score =  userScore;
+    return quizResult;
   }
 }
